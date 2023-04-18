@@ -4,4 +4,14 @@ Rails.application.routes.draw do
 
   # Defines the root path route ("/")
   # root "articles#index"
+
+  # All API endpoints should go in this namespace.
+  # If you need a custom route to an API endpoint,
+  # add it in the custom routes section, but make
+  # sure the resource-based route is here.
+  namespace :api do
+    namespace :v1 do
+      resources :accounts, only: [:create]
+    end
+  end
 end
