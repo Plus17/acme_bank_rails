@@ -57,6 +57,14 @@ group :development, :test do
   gem "debug", platforms: %i[ mri mingw x64_mingw ]
 
   gem "standard"
+
+  # We use Factory Bot in place of fixtures
+  # to generate realistic test data
+  gem "factory_bot_rails"
+
+  # We use Faker to generate values for attributes
+   # in each factory
+   gem "faker"
 end
 
 group :development do
