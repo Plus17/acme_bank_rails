@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_04_18_191821) do
+ActiveRecord::Schema[7.0].define(version: 2023_04_18_234838) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
   enable_extension "plpgsql"
@@ -23,6 +23,18 @@ ActiveRecord::Schema[7.0].define(version: 2023_04_18_191821) do
     t.datetime "updated_at", null: false
     t.index ["user_id"], name: "index_accounts_on_user_id"
     t.check_constraint "balance_cents >= 0", name: "accounts_balance_must_be_positive"
+  end
+
+  create_table "deposits", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "account_id", null: false
+    t.integer "amount_cents", default: 0, null: false
+    t.string "amount_currency", default: "USD", null: false
+    t.string "idempotency_key", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["account_id"], name: "index_deposits_on_account_id"
+    t.index ["idempotency_key"], name: "index_deposits_on_idempotency_key", unique: true
+    t.check_constraint "amount_cents > 0", name: "deposits_amount_must_greater_than_0"
   end
 
   create_table "users", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -43,4 +55,5 @@ ActiveRecord::Schema[7.0].define(version: 2023_04_18_191821) do
   end
 
   add_foreign_key "accounts", "users"
+  add_foreign_key "deposits", "accounts"
 end
