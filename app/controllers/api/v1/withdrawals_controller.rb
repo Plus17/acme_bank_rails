@@ -20,7 +20,6 @@ class Api::V1::WithdrawalsController < ApiController
     end
   end
 
-
   private
 
   def withdrawal_params
