@@ -5,7 +5,7 @@ class Withdrawal < ApplicationRecord
 
   validates :idempotency_key, presence: true, uniqueness: true
   validates :account, presence: true
-  validate :withdrawal_amount_less_than_account_balance
+  validate :withdrawal_amount_less_than_account_balance, on: :create
 
   private
 
